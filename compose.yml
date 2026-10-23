@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: hoteis
+      POSTGRES_USER: hoteis
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-hoteis_local}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - hoteis_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hoteis -d hoteis"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+  backend:
+    build: ./backend
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/hoteis
+      DB_USER: hoteis
+      DB_PASSWORD: ${DB_PASSWORD:-hoteis_local}
+      TZ: America/Sao_Paulo
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:4200:80"
+    depends_on:
+      - backend
+volumes:
+  hoteis_data:

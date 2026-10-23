@@ -1,0 +1,12 @@
+node_modules/
+target/
+dist/
+.angular/
+.env
+*.log
+bin/
+obj/
+database/backups/*
+!database/backups/.gitkeep
+legacy-dotnet/bin/
+legacy-dotnet/obj/

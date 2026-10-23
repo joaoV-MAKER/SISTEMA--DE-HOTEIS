@@ -1,0 +1,11 @@
+import { registerLocaleData } from '@angular/common';
+import pt from '@angular/common/locales/pt';
+registerLocaleData(pt);
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+import { AppComponent } from './app/app';
+import { QuartosComponent } from './app/quartos';
+import { HospedesComponent } from './app/hospedes';
+import { ReservasComponent } from './app/reservas';
+bootstrapApplication(AppComponent,{providers:[provideHttpClient(),provideRouter([{path:'quartos',component:QuartosComponent},{path:'hospedes',component:HospedesComponent},{path:'reservas',component:ReservasComponent},{path:'',redirectTo:'reservas',pathMatch:'full'},{path:'**',redirectTo:'reservas'}])]}).catch(console.error);
